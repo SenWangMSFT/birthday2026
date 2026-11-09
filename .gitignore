@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Local camera originals; the optimized -web folders are the site assets.
+/assets/montreal/
+/assets/toronto/
+/assets/ottawa/
+/assets/nanjing/

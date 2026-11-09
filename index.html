@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0d0f" />
+    <meta name="description" content="陈君，一场为你而来的奇遇。今天，是你的生日。" />
+    <title>陈君，生日快乐</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-pause" viewBox="0 0 24 24">
+        <path d="M9 5v14M15 5v14" />
+      </symbol>
+      <symbol id="icon-play" viewBox="0 0 24 24">
+        <path d="m9 5 10 7-10 7Z" />
+      </symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24">
+        <path d="M6 18 18 6M6 6h12v12" />
+      </symbol>
+      <symbol id="icon-replay" viewBox="0 0 24 24">
+        <path d="M4 10a8 8 0 1 1 1 7M4 4v6h6" />
+      </symbol>
+      <symbol id="icon-fullscreen" viewBox="0 0 24 24">
+        <path d="M8 3H3v5M16 3h5v5M21 16v5h-5M8 21H3v-5" />
+      </symbol>
+      <symbol id="icon-sound" viewBox="0 0 24 24">
+        <path d="m11 5-6 5H2v4h3l6 5ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14" />
+      </symbol>
+      <symbol id="icon-muted" viewBox="0 0 24 24">
+        <path d="m11 5-6 5H2v4h3l6 5ZM16 9l6 6M22 9l-6 6" />
+      </symbol>
+      <symbol id="icon-sparkle" viewBox="0 0 48 48">
+        <path d="M24 5c1.8 12.5 6.5 17.2 19 19-12.5 1.8-17.2 6.5-19 19C22.2 30.5 17.5 25.8 5 24 17.5 22.2 22.2 17.5 24 5Z" />
+      </symbol>
+    </svg>
+
+    <audio id="background-music" preload="none" loop hidden></audio>
+    <audio id="birthday-music" preload="none" loop hidden></audio>
+
+    <div class="scene" id="scene" data-mode="calculator">
+      <canvas class="night-sky" id="night-sky" aria-hidden="true"></canvas>
+      <div class="birthday-lights" id="birthday-lights" aria-hidden="true">
+        <div class="light-wash"></div>
+        <div class="light-pool light-pool-one"></div>
+        <div class="light-pool light-pool-two"></div>
+        <div class="light-pool light-pool-three"></div>
+      </div>
+      <div class="earth-stage" id="earth-stage" aria-hidden="true" hidden></div>
+      <div class="finale-backdrop" id="finale-backdrop" aria-hidden="true" hidden></div>
+      <canvas class="comet-trail" id="comet-trail" aria-hidden="true"></canvas>
+      <svg class="candle-flight-sky" id="candle-flight-sky" aria-hidden="true" hidden>
+        <defs>
+          <radialGradient id="candle-star-light"></radialGradient>
+          <linearGradient id="candle-star-trail" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#f0dcc1" stop-opacity="0" />
+            <stop offset="1" stop-color="#e8e9df" stop-opacity=".8" />
+          </linearGradient>
+        </defs>
+        <path class="candle-flight-trail" fill="none" stroke="url(#candle-star-trail)" stroke-width="1.25" stroke-linecap="round"></path>
+        <g class="candle-flight-point"><circle fill="url(#candle-star-light)"></circle></g>
+      </svg>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+
+      <header class="scene-header">
+        <p class="wordmark">一场为你而来的奇遇</p>
+        <nav class="playback-controls" aria-label="序幕播放控制">
+          <button class="icon-button" id="fullscreen-button" type="button" aria-label="全屏播放（开启音乐，Esc 退出）" title="沉浸全屏 · 音乐开启 · Esc 退出" aria-pressed="false" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"></use></svg>
+          </button>
+          <button class="icon-button pause-button" id="pause-button" type="button" aria-label="暂停播放" aria-pressed="false" hidden>
+            <svg class="icon" id="pause-icon" aria-hidden="true"><use href="#icon-pause"></use></svg>
+          </button>
+          <button class="text-button skip-button" id="skip-button" type="button" hidden>
+            <span id="skip-label">跳过序幕</span>
+            <svg class="icon" id="skip-icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+          </button>
+        </nav>
+      </header>
+
+      <main class="scene-main" id="main">
+        <section class="magic-opening" id="magic-opening" aria-label="真爱心锁">
+          <div class="magic-lock">
+            <div class="magic-lock-symbol" aria-hidden="true">
+              <span class="magic-lock-aura"></span>
+              <svg viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="lock-metal" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#f8eaca" />
+                    <stop offset=".5" stop-color="#b39d76" />
+                    <stop offset="1" stop-color="#8199ae" />
+                  </linearGradient>
+                </defs>
+                <g class="magic-shackle">
+                  <path d="M29 46V30a21 21 0 0 1 42 0v16" fill="none" stroke="url(#lock-metal)" stroke-width="4" />
+                </g>
+                <rect x="21" y="43" width="58" height="43" rx="12" fill="#171b20" stroke="url(#lock-metal)" stroke-width="1.5" />
+                <path d="M50 54c-8-10-19 2-12 9l12 12 12-12c7-7-4-19-12-9Z" fill="none" stroke="url(#lock-metal)" stroke-width="1.3" />
+              </svg>
+            </div>
+            <h1 class="magic-lock-title">这份心意，只为你开启。</h1>
+            <p class="magic-lock-note">从一个小小的巧合开始。</p>
+          </div>
+          <div class="magic-calculator" role="group" aria-label="计算器">
+            <div class="calculator-screen">
+              <p class="calculator-expression" aria-hidden="true">&nbsp;</p>
+              <output class="calculator-output" aria-label="计算结果" aria-live="polite" aria-atomic="true" tabindex="-1"><span id="calculator-value">0</span></output>
+            </div>
+            <div class="calculator-keys" aria-label="计算器键盘">
+              <button type="button" class="calculator-key calculator-function" data-key="AC" aria-label="AC 全部清除">AC</button>
+              <button type="button" class="calculator-key calculator-function" data-key="sign" aria-label="切换正负号">+/−</button>
+              <button type="button" class="calculator-key calculator-function" data-key="%" aria-label="百分比">%</button>
+              <button type="button" class="calculator-key calculator-operator" data-key="/" aria-label="除以">÷</button>
+              <button type="button" class="calculator-key" data-key="7">7</button>
+              <button type="button" class="calculator-key" data-key="8">8</button>
+              <button type="button" class="calculator-key" data-key="9">9</button>
+              <button type="button" class="calculator-key calculator-operator" data-key="*" aria-label="乘以">×</button>
+              <button type="button" class="calculator-key" data-key="4">4</button>
+              <button type="button" class="calculator-key" data-key="5">5</button>
+              <button type="button" class="calculator-key" data-key="6">6</button>
+              <button type="button" class="calculator-key calculator-operator" data-key="-" aria-label="减去">−</button>
+              <button type="button" class="calculator-key" data-key="1">1</button>
+              <button type="button" class="calculator-key" data-key="2">2</button>
+              <button type="button" class="calculator-key" data-key="3">3</button>
+              <button type="button" class="calculator-key calculator-operator" data-key="+" aria-label="加上">+</button>
+              <button type="button" class="calculator-key calculator-function" data-key="backspace" aria-label="删除最后一位">⌫</button>
+              <button type="button" class="calculator-key" data-key="0">0</button>
+              <button type="button" class="calculator-key" data-key="." aria-label="小数点">.</button>
+              <button type="button" class="calculator-key calculator-equals" data-key="=" aria-label="等于">=</button>
+            </div>
+          </div>
+          <div class="magic-number" aria-hidden="true" hidden>
+            <span class="magic-pair"><span class="magic-pair-digits"></span><span class="magic-pair-label">月</span></span>
+            <span class="magic-pair"><span class="magic-pair-digits"></span><span class="magic-pair-label">日</span></span>
+            <span class="magic-pair"><span class="magic-pair-digits"></span><span class="magic-pair-label">时</span></span>
+            <span class="magic-pair"><span class="magic-pair-digits"></span><span class="magic-pair-label">分</span></span>
+          </div>
+          <div class="magic-date-copy" aria-hidden="true">
+            <p class="magic-date-heading">原来，答案就是此刻。</p>
+            <p class="magic-date-label"></p>
+          </div>
+          <svg class="magic-key" viewBox="0 0 120 60" aria-hidden="true">
+            <circle cx="27" cy="30" r="16" fill="none" stroke="url(#lock-metal)" stroke-width="3" />
+            <circle cx="27" cy="30" r="7" fill="none" stroke="url(#lock-metal)" stroke-width="1" />
+            <path d="M43 30h62v12h-9V30M80 30v9h-8v-9" fill="none" stroke="url(#lock-metal)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <p class="magic-status sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+        </section>
+        <div class="puzzle-stage" id="birthday-title-frame" aria-hidden="true" hidden>
+          <svg class="birthday-calligraphy" id="birthday-calligraphy" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <text id="birthday-glyphs" x="500" y="200" text-anchor="middle" dominant-baseline="central">生日快乐</text>
+            </defs>
+            <g id="birthday-pieces"></g>
+            <use id="birthday-complete" href="#birthday-glyphs" visibility="hidden"></use>
+          </svg>
+        </div>
+        <section class="intro" id="intro" aria-label="生日序幕" tabindex="-1" hidden>
+          <h1 class="sr-only">为陈君准备的生日惊喜</h1>
+          <div class="waiting-dots" id="waiting-dots" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+          <p class="intro-message" id="intro-message" role="status" aria-live="polite" aria-atomic="true">
+            <span>正在检测今天……</span>
+          </p>
+          <span class="intro-rule" aria-hidden="true"></span>
+        </section>
+
+        <section class="reveal" id="reveal" aria-labelledby="birthday-name" hidden>
+          <p class="eyebrow">确认完成</p>
+          <h1 class="birthday-name" id="birthday-name">陈君</h1>
+          <p class="birthday-subtitle">今天，是你的生日。</p>
+          <p class="invitation" id="invitation">准备好了吗？</p>
+          <button class="birthday-button" id="birthday-button" type="button" aria-controls="birthday-sequence" aria-expanded="false">
+            <span class="birthday-orb" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><use href="#icon-sparkle"></use></svg>
+            </span>
+            <span class="birthday-button-label" id="birthday-button-label">开启生日模式</span>
+            <svg class="icon birthday-arrow" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+          </button>
+          <div class="wish-space" aria-hidden="true"></div>
+        </section>
+
+        <section class="birthday-sequence" id="birthday-sequence" aria-label="陈君的生日星光" tabindex="-1" hidden>
+          <h1 class="sr-only">生日快乐，陈君</h1>
+          <p class="sr-only" id="birthday-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        </section>
+        <section class="journey" id="journey" aria-label="城市回忆之旅" tabindex="-1" hidden>
+          <p class="journey-error" role="alert" hidden></p>
+          <div class="journey-flight">
+            <span class="journey-target" aria-hidden="true"></span>
+            <div class="journey-flight-copy">
+              <p class="journey-flight-title"></p>
+              <p class="journey-flight-detail"></p>
+            </div>
+          </div>
+          <div class="memory-layout" hidden>
+            <div class="journey-city">
+              <p class="journey-country"></p>
+              <h1 class="journey-city-name"></h1>
+              <p class="journey-city-english"></p>
+              <p class="journey-coordinates"></p>
+              <span class="journey-city-rule" aria-hidden="true"></span>
+              <p class="journey-memory-note">一些瞬间，一段回忆。</p>
+              <p class="journey-ending" hidden>还有一些话，想对你说。</p>
+            </div>
+            <div class="memory-content"></div>
+          </div>
+          <ol class="journey-route" aria-label="回忆之旅路线"></ol>
+          <p class="journey-status sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+        </section>
+        <section class="finale" id="finale" aria-label="写给陈君的生日尾声" hidden>
+          <section class="finale-page finale-things" data-finale-page="little-things" tabindex="-1" aria-labelledby="little-things-title" hidden>
+            <p class="finale-eyebrow">04 <span>想认真说的</span></p>
+            <h1 class="finale-heading" id="little-things-title">我喜欢的那些<br />关于你的小事</h1>
+            <p class="finale-introduction">回头看这些照片，喜欢的都是很具体的小事。</p>
+            <ol class="little-things-list">
+              <li><span>01</span><p>喜欢你笑起来，也喜欢一起做的怪表情。</p></li>
+              <li><span>02</span><p>喜欢两杯饮料碰在一起，和慢慢吃完的一餐。</p></li>
+              <li><span>03</span><p>喜欢和你并肩的球场、雪地，还有落叶的小路。</p></li>
+              <li><span>04</span><p>喜欢旅途中牵着手，累了就靠在一起。</p></li>
+            </ol>
+          </section>
+          <section class="finale-page finale-letter" data-finale-page="letter" tabindex="-1" aria-labelledby="letter-title" hidden>
+            <p class="finale-eyebrow">05 <span>给你的一封信</span></p>
+            <h1 class="finale-heading" id="letter-title">写给 陈君</h1>
+            <div class="letter-copy">
+              <p class="letter-salutation">陈君：</p>
+              <p>翻着这些照片，想起蒙特利尔的落日、多伦多的冬夜、渥太华的花，还有南京一起吃过的饭。</p>
+              <p>最喜欢的，是镜子里挤在一起的我们，是球场边的自拍，也是旅途中相牵的手。</p>
+              <p>和你一起，看风景很好，打球、吃饭，或是靠着休息一会儿，也很好。</p>
+              <p>新的一岁，愿你自在、开心，继续做喜欢的事。以后，还想和你多拍一些这样的照片。生日快乐，陈君。</p>
+            </div>
+          </section>
+          <section class="finale-page finale-last" data-finale-page="last" tabindex="-1" aria-labelledby="last-title" hidden>
+            <p class="finale-eyebrow">06 <span>最后一页</span></p>
+            <h1 class="finale-heading" id="last-title">最后，还有一件事。</h1>
+            <span class="finale-fine-rule" aria-hidden="true"></span>
+            <p class="finale-close-invitation">还有一份惊喜，想留到最后。</p>
+            <p class="finale-introduction">先让时间，慢下来。</p>
+          </section>
+          <section class="finale-page finale-countdown" data-finale-page="countdown" tabindex="-1" aria-labelledby="eyes-closed-title" hidden>
+            <p class="finale-eyebrow">还有一个小小的惊喜</p>
+            <h1 class="finale-heading" id="eyes-closed-title">请轻轻闭上眼睛。</h1>
+            <p class="finale-introduction">三十秒后，再睁开。</p>
+            <div class="finale-heartbeat" aria-hidden="true"><span class="finale-seconds">30</span></div>
+            <p class="finale-countdown-note">先别偷看。</p>
+          </section>
+          <section class="finale-page finale-celebration" data-finale-page="cake" tabindex="-1" aria-labelledby="cake-title" aria-describedby="candle-tap-hint" aria-keyshortcuts="Enter Space" hidden>
+            <p class="finale-eyebrow cake-secondary">这一刻，只属于你</p>
+            <h1 class="finale-heading" id="cake-title">生日快乐，陈君。</h1>
+            <div class="birthday-cake cake-secondary">
+              <svg viewBox="0 0 520 420" role="img" aria-label="一只奶油色花朵生日蛋糕，点着一根温暖的蜡烛">
+                <defs>
+                  <linearGradient id="cake-cream" x1="0" x2="1">
+                    <stop stop-color="#dfceb0" /><stop offset=".18" stop-color="#fff5df" />
+                    <stop offset=".55" stop-color="#fffbee" /><stop offset="1" stop-color="#dfcdab" />
+                  </linearGradient>
+                  <linearGradient id="cake-plate" x1="0" x2="0" y1="0" y2="1">
+                    <stop stop-color="#f8e9df" /><stop offset="1" stop-color="#c5a399" />
+                  </linearGradient>
+                  <radialGradient id="candle-light"><stop stop-color="#f8d591" stop-opacity=".3" /><stop offset="1" stop-color="#f8d591" stop-opacity="0" /></radialGradient>
+                  <pattern id="candle-stripe" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+                    <rect width="14" height="14" fill="#fff3de" /><rect width="7" height="14" fill="#c67b8d" />
+                  </pattern>
+                  <g id="cake-flower">
+                    <g fill="#8d445e">
+                      <ellipse cy="-10" rx="7" ry="12" /><ellipse cy="-10" rx="7" ry="12" transform="rotate(72)" />
+                      <ellipse cy="-10" rx="7" ry="12" transform="rotate(144)" /><ellipse cy="-10" rx="7" ry="12" transform="rotate(216)" />
+                      <ellipse cy="-10" rx="7" ry="12" transform="rotate(288)" />
+                    </g>
+                    <circle r="4.5" fill="#ebcf97" /><circle cx="-1" cy="-1" r="1.5" fill="#fff2c7" />
+                  </g>
+                  <path id="cake-side" d="M119 210v83c0 52 282 52 282 0v-83Z" />
+                  <clipPath id="cake-side-clip"><use href="#cake-side" /></clipPath>
+                </defs>
+                <ellipse cx="260" cy="339" rx="179" ry="31" fill="#000" opacity=".12" />
+                <ellipse cx="260" cy="319" rx="174" ry="45" fill="url(#cake-plate)" />
+                <ellipse cx="260" cy="311" rx="173" ry="41" fill="#f3e5dc" />
+                <use href="#cake-side" fill="url(#cake-cream)" />
+                <path d="M123 245c0 12 16 15 20 1 4-15 17-11 20 0s15 13 19-1 16-12 20 1 15 12 19-2 17-10 20 1 15 13 20-1 16-9 20 2 15 10 20-3 15-10 20 1 16 14 20 0 15-10 20 1 15 10 19-2 15-12 21-1 15 14 18 0v-31H123Z" fill="#fff6e2" opacity=".65" clip-path="url(#cake-side-clip)" />
+                <ellipse cx="260" cy="210" rx="141" ry="43" fill="#fbf0d7" />
+                <ellipse cx="260" cy="207" rx="134" ry="36" fill="#fff9e9" stroke="#e9dcc0" stroke-dasharray="2 4" />
+                <use href="#cake-flower" transform="translate(181 203) rotate(-18) scale(1.05)" />
+                <use href="#cake-flower" transform="translate(333 203) rotate(24) scale(.8)" />
+                <use href="#cake-flower" transform="translate(278 233) rotate(10) scale(.72)" />
+                <use href="#cake-flower" transform="translate(178 281) rotate(-14) scale(.85)" />
+                <use href="#cake-flower" transform="translate(333 294) rotate(20)" />
+                <g fill="#c0a67e"><circle cx="253" cy="286" r="1.5" /><circle cx="259" cy="280" r="1.5" /><circle cx="264" cy="291" r="1.3" /><circle cx="296" cy="258" r="1.3" /><circle cx="302" cy="264" r="1.3" /></g>
+                <rect x="253" y="126" width="14" height="84" rx="2" fill="url(#candle-stripe)" stroke="#d7baa5" />
+                <path d="M260 127v-12" stroke="#4f3d37" stroke-width="2" />
+                <g id="candle-flame-holder"><g class="candle-flame">
+                  <ellipse cx="260" cy="106" rx="68" ry="72" fill="url(#candle-light)" />
+                  <path d="M260 82c-17 20-9 35 0 35s15-17 0-35Z" fill="#edb86a" />
+                  <path class="candle-core" d="M260 92c-8 12-6 22 0 22s9-11 0-22Z" fill="#fff3c1" />
+                </g></g>
+              </svg>
+            </div>
+            <p class="finale-cake-wish cake-secondary">愿新一岁的每一天，都有温柔与光。</p>
+            <div class="finale-gift-space">
+              <button type="button" class="gift-button" id="gift-button" aria-controls="gift-message" aria-expanded="false" hidden>该拆礼物啦 <span aria-hidden="true">→</span></button>
+              <div class="gift-message" id="gift-message" tabindex="-1" hidden>
+                <p class="gift-message-title">礼物，等你亲手打开。</p>
+                <p>现在，去拆为你准备的礼物吧。</p>
+              </div>
+            </div>
+            <p class="sr-only" id="candle-tap-hint">轻触屏幕或按回车键，让烛光飞向星空。</p>
+          </section>
+          <p class="finale-status sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+        </section>
+        <noscript>
+          <style>
+            #intro, #magic-opening, #birthday-button, #invitation, .scene-footer { display: none; }
+            #reveal[hidden] { display: block !important; }
+          </style>
+          <p class="no-script-wish">愿你新的一岁，所遇皆温柔，所行皆坦途。</p>
+        </noscript>
+      </main>
+
+      <footer class="scene-footer">
+        <div class="footer-left">
+          <button class="sound-button" id="sound-button" type="button" aria-label="开启背景声音：星空氛围声" aria-pressed="false" hidden>
+            <svg class="icon" id="sound-icon" aria-hidden="true"><use href="#icon-muted"></use></svg>
+          </button>
+          <button class="wish-hint" id="wish-hint" type="button" hidden>
+            <span class="hint-light" aria-hidden="true"></span>
+            <span>轻触微光，寻找藏在暗处的祝福</span>
+          </button>
+        </div>
+        <ol class="scene-progress" id="scene-progress" aria-label="序幕进度">
+          <li aria-label="第一步：检测今天" aria-current="step"><span></span></li>
+          <li aria-label="第二步：发现特别的日子"><span></span></li>
+          <li aria-label="第三步：确认主角"><span></span></li>
+          <li aria-label="第四步：确认完成"><span></span></li>
+        </ol>
+        <nav class="journey-controls" id="journey-controls" aria-label="回忆照片控制" hidden>
+          <button type="button" class="memory-control" id="memory-previous" disabled>
+            <span aria-hidden="true">←</span><span>上一页</span>
+          </button>
+          <span class="memory-count" id="memory-count" aria-live="off">01 / 04</span>
+          <button type="button" class="memory-control" id="memory-next" disabled>
+            <span id="memory-next-label">跳过航行</span><span aria-hidden="true">→</span>
+          </button>
+        </nav>
+        <nav class="journey-controls" id="finale-controls" aria-label="尾声阅读控制" hidden>
+          <button type="button" class="memory-control" id="finale-previous"><span aria-hidden="true">←</span><span>上一页</span></button>
+          <span class="memory-count finale-page-count">01 / 03</span>
+          <button type="button" class="memory-control" id="finale-next"><span>下一页</span><span aria-hidden="true">→</span></button>
+        </nav>
+      </footer>
+    </div>
+    <p class="notice" id="notice" role="status" aria-live="polite" aria-atomic="true"></p>
+  </body>
+</html>
